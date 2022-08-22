@@ -1,5 +1,6 @@
 package hello.itemservice.domain.item;
 
+import hello.itemservice.domain.UpdateParamDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -29,11 +30,18 @@ public class ItemRepository {
     }
 
     // Item updateparam 대신 updateParamDTO 만들어야 함 나중에 리팩토링
-    public void update(Long itemId, Item updateParam) {
+    public void update(Long itemId, UpdateParamDto updateParam) {
         Item findItem = findById(itemId);
         findItem.setItemName(updateParam.getItemName());
         findItem.setPrice(updateParam.getPrice());
         findItem.setQuantity(updateParam.getQuantity());
+    }
+
+    public void delete(Long itemId) {
+
+        if(store.containsKey(itemId)) {
+            store.remove(itemId);
+        }
     }
 
     // 테스트용

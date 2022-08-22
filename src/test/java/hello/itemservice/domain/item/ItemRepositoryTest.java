@@ -1,5 +1,6 @@
 package hello.itemservice.domain.item;
 
+import hello.itemservice.domain.UpdateParamDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class ItemRepositoryTest {
         Long itemId = savedItem.getId();
 
         //when
-        Item updateParam = new Item("item2", 20000, 30);
+        UpdateParamDto updateParam = new UpdateParamDto("item2", 20000, 30);
         itemRepository.update(itemId, updateParam);
 
         //then
@@ -66,6 +67,21 @@ class ItemRepositoryTest {
         assertThat(findItem.getItemName()).isEqualTo(updateParam.getItemName());
         assertThat(findItem.getPrice()).isEqualTo(updateParam.getPrice());
         assertThat(findItem.getQuantity()).isEqualTo(updateParam.getQuantity());
+    }
+
+    @Test
+    void deleteItem() {
+        // given
+        Item item = new Item("item1", 100000, 10);
+        itemRepository.save(item);
+        Long itemId = item.getId();
+
+        // when
+        itemRepository.delete(itemId);
+
+        // then
+        Item deletedItem = itemRepository.findById(itemId);
+        assertThat(deletedItem).isNull();
     }
 
 }
