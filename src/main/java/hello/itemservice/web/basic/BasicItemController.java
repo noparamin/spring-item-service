@@ -4,6 +4,9 @@ import hello.itemservice.domain.UpdateParamDto;
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/basic/items")
 @RequiredArgsConstructor
@@ -25,6 +29,20 @@ public class BasicItemController {
         model.addAttribute("items", items);
 
         return "basic/items";
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    public ResponseEntity<List> items() {
+        List<Item> items = itemRepository.findAll();
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/lists")
+    public List<Item> items2() {
+        List<Item> items = itemRepository.findAll();
+        return items;
     }
 
     @GetMapping("/{itemId}")
